@@ -1,0 +1,16 @@
+@startuml
+
+
+Application -> Crawler : process()
+
+Crawler -> UrlCollection : next()
+Crawler <-- UrlCollection : URL
+
+Crawler -> HttpClient : sendRequest
+Crawler <-- HttpClient : Response
+
+Crawler -> EventDispatcher : Events::PAGE_FOUND
+
+Crawler -> UrlCollection : add
+
+@enduml
