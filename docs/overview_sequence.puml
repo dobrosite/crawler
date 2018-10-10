@@ -4,13 +4,16 @@
 Application -> Crawler : process()
 
 Crawler -> UrlCollection : next()
-Crawler <-- UrlCollection : URL
+Crawler <-- UrlCollection : url
 
-Crawler -> HttpClient : sendRequest
-Crawler <-- HttpClient : Response
+Crawler -> HttpClient : get(url)
+Crawler <-- HttpClient : document
 
-Crawler -> EventDispatcher : Events::PAGE_FOUND
+Crawler -> EventDispatcher : dispatch(PAGE_FOUND)
 
-Crawler -> UrlCollection : add
+Crawler -> HtmlParser : findLinks(documents)
+Crawler <-- HtmlParser : urls
+
+Crawler -> UrlCollection : add(urls)
 
 @enduml
