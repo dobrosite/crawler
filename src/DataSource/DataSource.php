@@ -12,6 +12,8 @@ use DobroSite\Crawler\Document\Document;
 
 /**
  * Источник данных.
+ *
+ * @since 0.1
  */
 interface DataSource
 {
@@ -21,6 +23,8 @@ interface DataSource
      * @param string $uri
      *
      * @return Document
+     *
+     * @since 0.1
      */
     public function getDocument($uri);
 }

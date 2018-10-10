@@ -4,14 +4,14 @@
 Application -> Crawler : process()
 
 Crawler -> UriCollection : next()
-Crawler <-- UriCollection : url
+Crawler <-- UriCollection : uri
 
-Crawler -> DataSource : get(url)
+Crawler -> DataSource : getDocument(uri)
 Crawler <-- DataSource : document
 
-Crawler -> EventDispatcher : dispatch(PAGE_FOUND)
+Crawler -> EventDispatcher : dispatch(FETCH_DOCUMENT)
 
-Crawler -> UriExtractor : findLinks(documents)
+Crawler -> UriExtractor : extract(document)
 Crawler <-- UriExtractor : uris
 
 Crawler -> UriCollection : add(uris)

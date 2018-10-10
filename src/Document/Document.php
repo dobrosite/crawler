@@ -10,6 +10,8 @@ namespace DobroSite\Crawler\Document;
 
 /**
  * Документ.
+ *
+ * @since 0.1
  */
 interface Document
 {

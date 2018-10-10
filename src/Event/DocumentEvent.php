@@ -13,6 +13,8 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Событие, связанное с документом.
+ *
+ * @since 0.1
  */
 class DocumentEvent extends Event
 {
@@ -37,6 +39,8 @@ class DocumentEvent extends Event
      * Возвращает документ, с которым связано событие.
      *
      * @return Document
+     *
+     * @since 0.1
      */
     public function getDocument()
     {

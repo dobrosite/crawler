@@ -11,7 +11,8 @@ namespace DobroSite\Crawler;
 use DobroSite\Crawler\DataSource\DataSource;
 use DobroSite\Crawler\Document\Document;
 use DobroSite\Crawler\Event\DocumentEvent;
-use DobroSite\Crawler\UriCollection\UriCollection;
+use DobroSite\Crawler\URI\UriExtractor;
+use DobroSite\Crawler\URI\UriQueue;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -25,45 +26,53 @@ class CrawlerTest extends TestCase
      */
     public function testProcess()
     {
-        $uriCollection = $this->createMock(UriCollection::class);
-
-        $uriCollection
-            ->expects(self::exactly(2))
-            ->method('valid')
-            ->willReturnOnConsecutiveCalls(true, false);
-
-        $uriCollection
+        $uriQueue = $this->createMock(UriQueue::class);
+        $uriQueue
             ->expects(self::once())
-            ->method('current')
-            ->willReturn('scheme:id');
+            ->method('enqueue')
+            ->with(['scheme:id2']);
+        $uriQueue
+            ->expects(self::exactly(3))
+            ->method('dequeue')
+            ->willReturnOnConsecutiveCalls('scheme:id1', 'scheme:id2', null);
 
-        $document = $this->createMock(Document::class);
+        $document1 = $this->createMock(Document::class);
+        $document2 = $this->createMock(Document::class);
 
         $dataSource = $this->createMock(DataSource::class);
-
         $dataSource
-            ->expects(self::once())
+            ->expects(self::exactly(2))
             ->method('getDocument')
-            ->with('scheme:id')
-            ->willReturn($document);
+            ->willReturnMap(
+                [
+                    ['scheme:id1', $document1],
+                    ['scheme:id2', $document2]
+                ]
+            );
+
+        $uriExtractor = $this->createMock(UriExtractor::class);
+        $uriExtractor
+            ->expects(self::once())
+            ->method('extractUris')
+            ->with(self::identicalTo($document1))
+            ->willReturn(['scheme:id2']);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-
         $eventDispatcher
             ->expects(self::once())
             ->method('dispatch')
             ->with(
                 CrawlerEvents::FETCH_DOCUMENT,
                 self::callback(
-                    function (DocumentEvent $event) use ($document) {
-                        self::assertSame($document, $event->getDocument());
+                    function (DocumentEvent $event) use ($document1) {
+                        self::assertSame($document1, $event->getDocument());
 
                         return true;
                     }
                 )
             );
 
-        $crawler = new Crawler($eventDispatcher);
-        $crawler->process($dataSource, $uriCollection);
+        $crawler = new Crawler($eventDispatcher, $uriExtractor);
+        $crawler->process($dataSource, $uriQueue);
     }
 }
