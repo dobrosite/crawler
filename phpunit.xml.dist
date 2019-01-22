@@ -9,9 +9,8 @@
 >
     <testsuites>
 
-        <!-- Все тесты -->
-        <testsuite name="all">
-            <directory>tests</directory>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
         </testsuite>
 
     </testsuites>

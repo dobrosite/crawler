@@ -23,11 +23,11 @@ interface UriQueue
     public function dequeue();
 
     /**
-     * Добавляет URI(s) в очередь.
+     * Добавляет URI в очередь.
      *
-     * @param string|string[] $uris
+     * @param string $uri
      *
      * @return void
      */
-    public function enqueue(array $uris);
+    public function enqueue($uri);
 }

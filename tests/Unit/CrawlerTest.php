@@ -6,8 +6,10 @@
  * @copyright 2018, ООО «Добро.сайт», http://добро.сайт
  */
 
-namespace DobroSite\Crawler;
+namespace DobroSite\Crawler\Tests\Unit;
 
+use DobroSite\Crawler\Crawler;
+use DobroSite\Crawler\CrawlerEvents;
 use DobroSite\Crawler\DataSource\DataSource;
 use DobroSite\Crawler\Document\Document;
 use DobroSite\Crawler\Event\DocumentEvent;
@@ -24,13 +26,13 @@ class CrawlerTest extends TestCase
     /**
      * Проверяет обход хранилища.
      */
-    public function testProcess()
+    public function testStorageTraversed()
     {
         $uriQueue = $this->createMock(UriQueue::class);
         $uriQueue
             ->expects(self::once())
             ->method('enqueue')
-            ->with(['scheme:id2']);
+            ->with('scheme:id2');
         $uriQueue
             ->expects(self::exactly(3))
             ->method('dequeue')
@@ -52,24 +54,39 @@ class CrawlerTest extends TestCase
 
         $uriExtractor = $this->createMock(UriExtractor::class);
         $uriExtractor
-            ->expects(self::once())
+            ->expects(self::exactly(2))
             ->method('extractUris')
-            ->with(self::identicalTo($document1))
-            ->willReturn(['scheme:id2']);
+            ->withConsecutive(
+                self::identicalTo($document1),
+                self::identicalTo($document2)
+            )
+            ->willReturnOnConsecutiveCalls(['scheme:id2'], []);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher
-            ->expects(self::once())
+            ->expects(self::exactly(2))
             ->method('dispatch')
-            ->with(
-                CrawlerEvents::FETCH_DOCUMENT,
-                self::callback(
-                    function (DocumentEvent $event) use ($document1) {
-                        self::assertSame($document1, $event->getDocument());
+            ->withConsecutive(
+                [
+                    CrawlerEvents::FETCH_DOCUMENT,
+                    self::callback(
+                        function (DocumentEvent $event) use ($document1) {
+                            self::assertSame($document1, $event->getDocument());
 
-                        return true;
-                    }
-                )
+                            return true;
+                        }
+                    )
+                ],
+                [
+                    CrawlerEvents::FETCH_DOCUMENT,
+                    self::callback(
+                        function (DocumentEvent $event) use ($document2) {
+                            self::assertSame($document2, $event->getDocument());
+
+                            return true;
+                        }
+                    )
+                ]
             );
 
         $crawler = new Crawler($eventDispatcher, $uriExtractor);

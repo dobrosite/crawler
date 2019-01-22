@@ -70,7 +70,9 @@ class Crawler
             $this->eventDispatcher->dispatch(CrawlerEvents::FETCH_DOCUMENT, $event);
 
             $uris = $this->uriExtractor->extractUris($document);
-            $uriQueue->enqueue($uris);
+            foreach ($uris as $uri) {
+                $uriQueue->enqueue($uri);
+            }
         }
     }
 }
