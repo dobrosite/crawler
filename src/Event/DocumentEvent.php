@@ -29,6 +29,8 @@ class DocumentEvent extends Event
      * Создаёт новое событие.
      *
      * @param Document $document Документ, с которым связано событие.
+     *
+     * @since 0.1
      */
     public function __construct(Document $document)
     {

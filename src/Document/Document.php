@@ -15,4 +15,30 @@ namespace DobroSite\Crawler\Document;
  */
 interface Document
 {
+    /**
+     * Тело документа.
+     *
+     * @return string
+     *
+     * @since 0.1
+     */
+    public function content();
+
+    /**
+     * Возвращает ссылки, содержащиеся в документе.
+     *
+     * @return string[]
+     *
+     * @since 0.1
+     */
+    public function links();
+
+    /**
+     * URI документа.
+     *
+     * @return string
+     *
+     * @since 0.1
+     */
+    public function uri();
 }

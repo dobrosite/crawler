@@ -6,16 +6,16 @@
  * @copyright 2018, ООО «Добро.сайт», http://добро.сайт
  */
 
-namespace DobroSite\Crawler\DataSource;
+namespace DobroSite\Crawler\Source;
 
 use DobroSite\Crawler\Document\Document;
 
 /**
- * Источник данных.
+ * Источник документов.
  *
  * @since 0.1
  */
-interface DataSource
+interface Source
 {
     /**
      * Возвращает документ с указанным URI.
@@ -27,4 +27,13 @@ interface DataSource
      * @since 0.1
      */
     public function getDocument($uri);
+
+    /**
+     * Корневой URI источника.
+     *
+     * @return string
+     *
+     * @since 0.1
+     */
+    public function rootUri();
 }

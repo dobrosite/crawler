@@ -9,16 +9,16 @@
 namespace DobroSite\Crawler;
 
 /**
- * Коды событий.
+ * Коды событий обходчика.
  *
  * @since 0.1
  */
 final class CrawlerEvents
 {
     /**
-     * Из хранилища получен новый документ.
+     * Ссылка готовится встать в очередь на обработку.
      *
      * @since 0.1
      */
-    const FETCH_DOCUMENT = 'dobrosite.crawler.fetch_document';
+    const BEFORE_LINK_ENQUEUE = 'dobrosite.crawler.before_link_enqueue';
 }
