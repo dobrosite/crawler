@@ -22,7 +22,6 @@
         "symfony/event-dispatcher": "^3.2|^4.0"
     },
     "require-dev": {
-        "doctrine/orm": "^2.5",
         "phpunit/phpunit": "^4.8|^5.0|^6.0"
     },
     "autoload": {
