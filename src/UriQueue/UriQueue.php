@@ -36,6 +36,8 @@ interface UriQueue
     /**
      * Добавляет URI в очередь.
      *
+     * Реализации не должны помещать в очередь URI, который ранее уже добавлялся.
+     *
      * @param string $uri
      *
      * @return void

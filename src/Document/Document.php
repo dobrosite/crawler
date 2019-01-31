@@ -25,7 +25,7 @@ interface Document
     public function content();
 
     /**
-     * Возвращает ссылки, содержащиеся в документе.
+     * Ссылки, содержащиеся в документе.
      *
      * @return string[]
      *
