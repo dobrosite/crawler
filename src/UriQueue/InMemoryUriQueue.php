@@ -13,7 +13,7 @@ namespace DobroSite\Crawler\UriQueue;
  *
  * @since 0.1
  */
-class MemoryUriQueue implements UriQueue
+class InMemoryUriQueue implements UriQueue
 {
     /**
      * Указатель.
