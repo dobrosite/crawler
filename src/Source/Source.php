@@ -9,6 +9,7 @@
 namespace DobroSite\Crawler\Source;
 
 use DobroSite\Crawler\Document\Document;
+use DobroSite\Crawler\Exception\Source\ReadException;
 
 /**
  * Источник документов.
@@ -24,6 +25,9 @@ interface Source
      *
      * @return Document
      *
+     * @throws ReadException Если не удалось прочитать данные.
+     *
+     * @since 0.2 вбрасывает исключение ReadException если не удалось прочитать данные.
      * @since 0.1
      */
     public function getDocument($uri);
